@@ -1,4 +1,5 @@
 from dash import Dash, html, dcc,Input,Output,State
+import plotly.graph_objects as go
 from utils.randomarray import random_array
 app = Dash(__name__)
 
@@ -38,7 +39,11 @@ app.layout = html.Div(children=[
     dcc.Button('Reset', id='reset',n_clicks=0,style ={'marginRight':'10px','backgroundColor':'red','color':'white'}
     ),
     html.H1(['Visualization Area']),
-    html.Div(style={'height':'400px','border':'2px solid gray','borderRadius':'10px'}),
+    html.Div(children=[
+        dcc.Graph(
+            id='visualisation'
+        )
+    ],style={'height':'400px','border':'2px solid gray','borderRadius':'10px'}),
 ],
     style = {
         'width':"80%",
@@ -60,16 +65,20 @@ def update_output(value):
 def update_output(value):
     return value
 @app.callback(
-    Output('buttonclick1','children'),
+    Output('visualisation','figure'),
     Input('generate_array','n_clicks'),
     State('input1','value')
 )
-
-def button_click(n_clicks,size):
-    if n_clicks > 0 :
-        size = int(size)
-        array = random_array(size)
-        print(array)
-
+def update_graph(n_clicks,size):
+    size = int(size)
+    array = random_array(size)
+    figure = go.Figure()
+    figure.add_trace(
+        go.Bar(
+            x=list(range(size)),
+            y=array
+        )
+    )
+    return figure
 if __name__ =='__main__':
     app.run(debug=True)
