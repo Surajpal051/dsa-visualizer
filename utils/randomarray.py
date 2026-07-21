@@ -1,3 +1,5 @@
+## Function to generate the random array
+
 import random
 def random_array(size):
     arr = []

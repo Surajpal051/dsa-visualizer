@@ -3,6 +3,7 @@ import plotly.graph_objects as go
 from utils.randomarray import random_array
 app = Dash(__name__)
 
+## app layout
 app.layout = html.Div(children=[
     dcc.Store(id='array-store'),
     html.H1(["DSA Visualizer"], style = {'textAlign':'center','marginBottom':'30px'}),
@@ -51,19 +52,23 @@ app.layout = html.Div(children=[
         'padding':'20px'
     }
 )
-
+## updating the size slider value
 @app.callback(
     Output('output_for_size','children'),
     Input('input1','value')
 )
 def update_output(value):
     return value
+
+## updating the speed slider value
 @app.callback(
     Output('output_for_speed','children'),
     Input('input2','value')
 )
 def update_output(value):
     return value
+
+## Updating the graph bars with array element value as size of bar
 @app.callback(
     Output('visualisation','figure'),
     Input('generate_array','n_clicks'),
